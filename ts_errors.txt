@@ -1,0 +1,68 @@
+src/components/ui/calendar.tsx(57,9): error TS2353: Object literal may only specify known properties, and 'IconLeft' does not exist in type 'Partial<CustomComponents>'.
+src/components/ui/calendar.tsx(57,22): error TS7031: Binding element 'className' implicitly has an 'any' type.
+src/components/ui/calendar.tsx(60,23): error TS7031: Binding element 'className' implicitly has an 'any' type.
+src/components/ui/form.tsx(13,8): error TS2307: Cannot find module 'react-hook-form' or its corresponding type declarations.
+src/components/workout/workout-builder.tsx(4,10): error TS2305: Module '"@/lib/constants"' has no exported member 'POWER_ZONES'.
+src/components/workout/workout-builder.tsx(22,40): error TS7006: Parameter 'sum' implicitly has an 'any' type.
+src/components/workout/workout-builder.tsx(22,45): error TS7006: Parameter 'block' implicitly has an 'any' type.
+src/components/workout/workout-builder.tsx(58,45): error TS18046: 'zone' is of type 'unknown'.
+src/components/workout/workout-builder.tsx(72,25): error TS7006: Parameter 'block' implicitly has an 'any' type.
+src/components/workout/workout-builder.tsx(72,32): error TS7006: Parameter 'index' implicitly has an 'any' type.
+src/components/workout/workout-chart.tsx(12,15): error TS2305: Module '"@/types"' has no exported member 'WorkoutBlock'.
+src/components/workout/workout-chart.tsx(13,10): error TS2305: Module '"@/lib/constants"' has no exported member 'POWER_ZONES'.
+src/components/workout/workout-chart.tsx(81,16): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: Props): Bar', gave the following error.
+    Property 'dataKey' is missing in type '{ key: string; fill: any; }' but required in type 'Pick<Readonly<Props>, "string" | "path" | "href" | "origin" | "media" | "spacing" | "order" | "height" | "width" | "rotate" | "scale" | "cursor" | "fill" | "stroke" | ... 488 more ... | "shape">'.
+  Overload 2 of 2, '(props: Props, context: any): Bar', gave the following error.
+    Property 'dataKey' is missing in type '{ key: string; fill: any; }' but required in type 'Pick<Readonly<Props>, "string" | "path" | "href" | "origin" | "media" | "spacing" | "order" | "height" | "width" | "rotate" | "scale" | "cursor" | "fill" | "stroke" | ... 488 more ... | "shape">'.
+src/components/workout/workout-player.tsx(4,10): error TS2305: Module '"@/lib/constants"' has no exported member 'POWER_ZONES'.
+src/components/workout/workout-player.tsx(25,47): error TS7006: Parameter 'acc' implicitly has an 'any' type.
+src/components/workout/workout-player.tsx(25,52): error TS7006: Parameter 'b' implicitly has an 'any' type.
+src/lib/zones.ts(1,10): error TS2305: Module '"@/lib/constants"' has no exported member 'POWER_ZONES'.
+src/lib/zones.ts(2,15): error TS2305: Module '"@/types"' has no exported member 'CalculatedPowerZone'.
+src/store/device-store.ts(3,24): error TS2307: Cannot find module 'zustand' or its corresponding type declarations.
+src/store/device-store.ts(6,3): error TS2305: Module '"@/lib/constants"' has no exported member 'FTMS_CONTROL_POINT_CHARACTERISTIC_UUID'.
+src/store/device-store.ts(8,3): error TS2724: '"@/lib/constants"' has no exported member named 'HR_MEASUREMENT_CHARACTERISTIC_UUID'. Did you mean 'HR_MEASUREMENT_CHAR_UUID'?
+src/store/device-store.ts(10,3): error TS2724: '"@/lib/constants"' has no exported member named 'INDOOR_BIKE_DATA_CHARACTERISTIC_UUID'. Did you mean 'INDOOR_BIKE_DATA_CHAR_UUID'?
+src/store/device-store.ts(12,15): error TS2305: Module '"@/types"' has no exported member 'Metrics'.
+src/store/device-store.ts(38,45): error TS7006: Parameter 'set' implicitly has an 'any' type.
+src/store/device-store.ts(38,50): error TS7006: Parameter 'get' implicitly has an 'any' type.
+src/store/device-store.ts(53,16): error TS7006: Parameter 'state' implicitly has an 'any' type.
+src/store/device-store.ts(91,19): error TS7006: Parameter 'state' implicitly has an 'any' type.
+src/store/device-store.ts(99,19): error TS7006: Parameter 'state' implicitly has an 'any' type.
+src/store/device-store.ts(130,22): error TS7006: Parameter 'state' implicitly has an 'any' type.
+src/store/device-store.ts(155,16): error TS7006: Parameter 'state' implicitly has an 'any' type.
+src/store/device-store.ts(181,22): error TS7006: Parameter 'power' implicitly has an 'any' type.
+src/store/device-store.ts(191,21): error TS7006: Parameter 'resistance' implicitly has an 'any' type.
+src/store/device-store.ts(205,48): error TS7006: Parameter 'state' implicitly has an 'any' type.
+src/store/device-store.ts(206,55): error TS7006: Parameter 'state' implicitly has an 'any' type.
+src/store/device-store.ts(207,49): error TS7006: Parameter 'state' implicitly has an 'any' type.
+src/store/device-store.ts(208,58): error TS7006: Parameter 'state' implicitly has an 'any' type.
+src/store/workout-store.ts(2,24): error TS2307: Cannot find module 'zustand' or its corresponding type declarations.
+src/store/workout-store.ts(3,44): error TS2307: Cannot find module 'zustand/middleware' or its corresponding type declarations.
+src/store/workout-store.ts(4,15): error TS2305: Module '"@/types"' has no exported member 'WorkoutBlock'.
+src/store/workout-store.ts(5,10): error TS2305: Module '"@/lib/constants"' has no exported member 'POWER_ZONES'.
+src/store/workout-store.ts(37,6): error TS7006: Parameter 'set' implicitly has an 'any' type.
+src/store/workout-store.ts(37,11): error TS7006: Parameter 'get' implicitly has an 'any' type.
+src/store/workout-store.ts(45,18): error TS7006: Parameter 'ftp' implicitly has an 'any' type.
+src/store/workout-store.ts(46,20): error TS7006: Parameter 'zone' implicitly has an 'any' type.
+src/store/workout-store.ts(46,26): error TS7006: Parameter 'duration' implicitly has an 'any' type.
+src/store/workout-store.ts(54,16): error TS7006: Parameter 'state' implicitly has an 'any' type.
+src/store/workout-store.ts(56,23): error TS7006: Parameter 'id' implicitly has an 'any' type.
+src/store/workout-store.ts(56,35): error TS7006: Parameter 'state' implicitly has an 'any' type.
+src/store/workout-store.ts(56,77): error TS7006: Parameter 'b' implicitly has an 'any' type.
+src/store/workout-store.ts(57,23): error TS7006: Parameter 'id' implicitly has an 'any' type.
+src/store/workout-store.ts(57,27): error TS7006: Parameter 'newDuration' implicitly has an 'any' type.
+src/store/workout-store.ts(58,16): error TS7006: Parameter 'state' implicitly has an 'any' type.
+src/store/workout-store.ts(59,39): error TS7006: Parameter 'b' implicitly has an 'any' type.
+src/store/workout-store.ts(62,19): error TS7006: Parameter 'id' implicitly has an 'any' type.
+src/store/workout-store.ts(62,23): error TS7006: Parameter 'direction' implicitly has an 'any' type.
+src/store/workout-store.ts(125,20): error TS7006: Parameter 'state' implicitly has an 'any' type.
+src/store/workout-store.ts(130,50): error TS7006: Parameter 'state' implicitly has an 'any' type.
+src/store/workout-store.ts(131,57): error TS7006: Parameter 'state' implicitly has an 'any' type.
+src/types/index.ts(5,14): error TS2687: All declarations of 'wakeLock' must have identical modifiers.
+src/types/index.ts(5,14): error TS2717: Subsequent property declarations must have the same type.  Property 'wakeLock' must be of type 'WakeLock', but here has type 'WakeLock | undefined'.
+types/validator.ts(53,39): error TS2307: Cannot find module '../../src/app/page.js' or its corresponding type declarations.
+types/validator.ts(62,39): error TS2307: Cannot find module '../../src/app/strava/exchange_token/page.js' or its corresponding type declarations.
+types/validator.ts(71,39): error TS2307: Cannot find module '../../src/app/api/strava/token/route.js' or its corresponding type declarations.
+types/validator.ts(84,39): error TS2307: Cannot find module '../../src/app/layout.js' or its corresponding type declarations.
