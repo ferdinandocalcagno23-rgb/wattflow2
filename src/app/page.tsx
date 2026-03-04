@@ -16,6 +16,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { cn } from '@/lib/utils';
 import { ProfileSelector } from '@/components/profile/ProfileSelector';
+import { HistoryDashboard } from '@/components/history/HistoryDashboard';
 import { UserProfile } from '@/types';
 import { setActiveProfileId } from '@/services/profileService';
 
@@ -90,7 +91,7 @@ const formatTime = (seconds: number) => {
   return `${m}:${s < 10 ? '0' : ''}${s}`;
 };
 
-type ViewState = 'HOME' | 'FREE_RIDE' | 'ERG_MODE' | 'EDITOR' | 'SESSION';
+type ViewState = 'HOME' | 'FREE_RIDE' | 'ERG_MODE' | 'EDITOR' | 'SESSION' | 'HISTORY';
 
 // --- Styled Components (Functional) ---
 
@@ -1003,11 +1004,14 @@ function App() {
       <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-neon-blue/20 rounded-full blur-[120px] -z-10 animate-pulse-slow mix-blend-screen" style={{ animationDelay: '2s' }}></div>
 
       <div className="text-center mb-16 relative">
-        <h1 className="text-5xl md:text-8xl font-black mb-6 tracking-tight text-white drop-shadow-2xl">
-          Your training, <br className="md:hidden" /> <GradientText>your way</GradientText>
+        <p className="text-sm font-bold text-gray-500 uppercase tracking-[0.2em] mb-4">
+          {new Date().toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long' })}
+        </p>
+        <h1 className="text-4xl md:text-6xl font-black mb-4 tracking-tight text-white drop-shadow-2xl">
+          Ciao, <GradientText>{currentProfile?.name}</GradientText>! 👋
         </h1>
         <p className="text-lg md:text-xl text-gray-400 font-medium max-w-lg mx-auto leading-relaxed">
-          Connect your smart trainer. Build your legacy.
+          Pronto per un nuovo allenamento?
         </p>
       </div>
 
@@ -2156,7 +2160,43 @@ function App() {
         </DialogContent>
       </Dialog>
 
-      {/* {view === 'HOME' && <SyncManager />} */}
+      {/* Bottom Navigation */}
+      {view !== 'SESSION' && (
+        <div className="fixed bottom-0 left-0 right-0 p-4 pb-8 z-50 bg-gradient-to-t from-black via-black/90 to-transparent pointer-events-none">
+          <div className="max-w-md mx-auto relative pointer-events-auto">
+            <div className="flex items-center justify-between bg-idx-surface/80 backdrop-blur-2xl px-6 py-4 rounded-full border border-white/10 shadow-[0_0_40px_rgba(0,0,0,0.8)]">
+              {[
+                { id: 'HOME', icon: Home, label: 'Home', activeColor: 'text-neon-cyan' },
+                { id: 'HISTORY', icon: Clock, label: 'Storico', activeColor: 'text-neon-purple' },
+                { id: 'EDITOR', icon: BookOpen, label: 'Workouts', activeColor: 'text-neon-green' },
+              ].map(item => {
+                const isActive = view === item.id || (view === 'HOME' && item.id === 'HOME' && !['EDITOR', 'HISTORY'].includes(view));
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => {
+                      if (item.id === 'HISTORY') {
+                        setView('HOME');
+                        // Small timeout to allow render if switching from another tab
+                        setTimeout(() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }), 50);
+                      } else {
+                        setView(item.id as ViewState);
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }
+                    }}
+                    className={`flex flex-col items-center gap-1.5 transition-all duration-300 relative ${isActive ? item.activeColor : 'text-gray-500 hover:text-gray-300'}`}
+                  >
+                    <item.icon size={22} className={isActive ? 'drop-shadow-[0_0_10px_currentColor]' : ''} />
+                    {isActive && (
+                      <span className="absolute -bottom-4 w-1.5 h-1.5 rounded-full bg-current shadow-[0_0_10px_currentColor]"></span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
