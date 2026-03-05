@@ -133,6 +133,10 @@ export interface Workout {
   totalDuration: number;
 }
 
+export interface CustomWorkout extends Workout {
+  profileId: number;
+}
+
 export type RawDataPoint = {
   time: number;
   power: number;
@@ -186,6 +190,7 @@ export interface UserProfile {
   trainingFrequency: number; // days per week
   trainingHours: number; // hours per week
   isDefault?: boolean;
+  avatar?: string;
 }
 
 export interface Metrics {

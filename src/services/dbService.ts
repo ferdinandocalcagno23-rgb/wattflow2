@@ -1,15 +1,17 @@
 import Dexie, { type Table } from 'dexie';
-import type { IntervalStep, RawDataPoint, UserProfile, WorkoutRecording } from '@/types';
+import type { IntervalStep, RawDataPoint, UserProfile, WorkoutRecording, CustomWorkout } from '@/types';
 
 export class CyclingDB extends Dexie {
   workouts!: Table<WorkoutRecording>;
   profiles!: Table<UserProfile>;
+  customWorkouts!: Table<CustomWorkout>;
 
   constructor() {
     super('CyclingDB');
-    this.version(2).stores({
+    this.version(3).stores({
       workouts: '++id, profileId, date, status',
       profiles: '++id, name, isDefault',
+      customWorkouts: 'id, profileId',
     }).upgrade(async () => {
       // Logic for future migrations if needed.
     });
@@ -76,4 +78,16 @@ export async function updateWorkoutStatus(id: number, status: 'pending' | 'synce
     updates.stravaId = stravaId;
   }
   await db.workouts.update(id, updates);
+}
+
+export async function addCustomWorkout(workout: CustomWorkout) {
+  return await db.customWorkouts.put(workout); // put will overwrite if id exists
+}
+
+export async function getCustomWorkoutsByProfile(profileId: number) {
+  return await db.customWorkouts.where('profileId').equals(profileId).toArray();
+}
+
+export async function deleteCustomWorkout(id: string) {
+  return await db.customWorkouts.delete(id);
 }

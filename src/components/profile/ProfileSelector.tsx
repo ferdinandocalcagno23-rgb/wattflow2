@@ -78,14 +78,15 @@ export const ProfileSelector: React.FC<ProfileSelectorProps> = ({ onProfileSelec
 
             <div className="w-full max-w-5xl relative z-10 animate-in fade-in zoom-in duration-700">
                 <div className="text-center mb-16">
-                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 mb-6 backdrop-blur-md">
+                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 mb-8 backdrop-blur-md">
                         <Activity className="w-4 h-4 text-neon-cyan animate-pulse" />
                         <span className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">WattFlow Training System</span>
                     </div>
-                    <h1 className="text-5xl md:text-7xl font-black text-white mb-6 tracking-tight">
-                        Choose Your <span className="bg-gradient-to-r from-neon-blue via-neon-purple to-neon-cyan bg-clip-text text-transparent">Power Profile</span>
+                    <h1 className="text-6xl md:text-8xl font-black text-white mb-2 tracking-tighter">
+                        Watt<span className="bg-gradient-to-r from-neon-blue via-neon-purple to-neon-cyan bg-clip-text text-transparent">Flow</span>
                     </h1>
-                    <p className="text-gray-400 font-medium text-lg">Pick a profile to access your personalized dashboard</p>
+                    <p className="text-sm font-bold text-gray-500 uppercase tracking-[0.25em] mb-12">training made easy</p>
+                    <p className="text-gray-400 font-medium text-lg">Chi si allena oggi?</p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -117,8 +118,16 @@ export const ProfileSelector: React.FC<ProfileSelectorProps> = ({ onProfileSelec
                                         </button>
                                     </div>
 
-                                    <div className="w-28 h-28 rounded-[2rem] bg-gradient-to-br from-white/5 to-white/10 border-2 border-white/10 flex items-center justify-center group-hover:border-neon-blue group-hover:shadow-[0_0_30px_rgba(59,130,246,0.3)] group-hover:-translate-y-1 transition-all duration-500 shadow-xl relative">
-                                        <User className="w-14 h-14 text-white/50 group-hover:text-white group-hover:scale-110 transition-all duration-500" />
+                                    <div className="w-28 h-28 rounded-[2rem] bg-gradient-to-br from-white/5 to-white/10 border-2 border-white/10 flex items-center justify-center group-hover:border-neon-blue group-hover:shadow-[0_0_30px_rgba(59,130,246,0.3)] group-hover:-translate-y-1 transition-all duration-500 shadow-xl relative overflow-hidden">
+                                        {profile.avatar ? (
+                                            <img
+                                                src={`/avatars/${profile.avatar}.png`}
+                                                alt={profile.name}
+                                                className="w-full h-full object-cover group-hover:scale-110 transition-all duration-500"
+                                            />
+                                        ) : (
+                                            <User className="w-14 h-14 text-white/50 group-hover:text-white group-hover:scale-110 transition-all duration-500" />
+                                        )}
                                         {workoutCounts[profile.id!] > 0 && (
                                             <div className="absolute -top-3 -right-3 w-10 h-10 rounded-2xl bg-neon-purple flex items-center justify-center shadow-lg border-2 border-idx-bg animate-in zoom-in duration-500 delay-300">
                                                 <Trophy className="w-5 h-5 text-white" />

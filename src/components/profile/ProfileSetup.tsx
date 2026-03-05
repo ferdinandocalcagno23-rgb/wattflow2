@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { User, Weight, Ruler, Calendar, Activity, Zap, ChevronRight, Save, X } from 'lucide-react';
 import { UserProfile } from '@/types';
 import { estimateFTP } from '@/services/profileService';
+import { cn } from '@/lib/utils';
 
 interface ProfileSetupProps {
     initialProfile?: Partial<UserProfile>;
@@ -69,10 +70,27 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({ initialProfile, onSa
                     {step === 1 && (
                         <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
                             <div className="flex flex-col items-center mb-4">
-                                <div className="w-20 h-20 rounded-full bg-neon-blue/20 border-2 border-neon-blue flex items-center justify-center mb-2 shadow-[0_0_20px_rgba(59,130,246,0.3)]">
-                                    <User className="w-10 h-10 text-neon-blue" />
+                                <p className="text-sm text-gray-400 mb-4">Choose your avatar</p>
+                                <div className="grid grid-cols-5 gap-3">
+                                    {['fox', 'bear', 'cat', 'rabbit', 'panda'].map(animal => (
+                                        <button
+                                            key={animal}
+                                            onClick={() => setFormData({ ...formData, avatar: animal })}
+                                            className={cn(
+                                                "w-12 h-12 rounded-2xl border-2 transition-all overflow-hidden bg-white/5",
+                                                formData.avatar === animal
+                                                    ? "border-neon-blue shadow-[0_0_15px_rgba(59,130,246,0.5)] scale-110"
+                                                    : "border-transparent hover:border-white/20"
+                                            )}
+                                        >
+                                            <img
+                                                src={`/avatars/${animal}.png`}
+                                                alt={animal}
+                                                className="w-full h-full object-cover"
+                                            />
+                                        </button>
+                                    ))}
                                 </div>
-                                <p className="text-sm text-gray-400">Basic Information</p>
                             </div>
 
                             <div className="space-y-4">
