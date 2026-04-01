@@ -7,10 +7,14 @@ export const useWorkoutRecorder = (workoutName: string, steps: IntervalStep[], p
   const [isRecording, setIsRecording] = useState(false);
   const rawDataRef = useRef<RawDataPoint[]>([]);
   const startTimeRef = useRef<number | null>(null);
+  const lastDatapointTimeRef = useRef<number | null>(null);
+  const activeDurationRef = useRef<number>(0);
 
   const startRecording = useCallback(() => {
     rawDataRef.current = [];
     startTimeRef.current = Date.now();
+    lastDatapointTimeRef.current = null;
+    activeDurationRef.current = 0;
     setIsRecording(true);
     console.log('Workout recording started.');
   }, []);
@@ -18,15 +22,24 @@ export const useWorkoutRecorder = (workoutName: string, steps: IntervalStep[], p
   const addDatapoint = useCallback((power: number, cadence: number, heartRate: number, speed: number) => {
     if (!isRecording || startTimeRef.current === null) return;
 
-    const time = (Date.now() - startTimeRef.current) / 1000; // time in seconds
+    const now = Date.now();
+    if (lastDatapointTimeRef.current !== null) {
+      const delta = (now - lastDatapointTimeRef.current) / 1000;
+      // Only count reasonable deltas (< 3s) to avoid counting pause gaps
+      if (delta < 3) {
+        activeDurationRef.current += delta;
+      }
+    }
+    lastDatapointTimeRef.current = now;
+    const time = activeDurationRef.current;
     rawDataRef.current.push({ time, power, cadence, heartRate, speed });
   }, [isRecording]);
 
   const stopRecording = useCallback(async () => {
     if (!isRecording || startTimeRef.current === null) return;
 
-    const endTime = Date.now();
-    const duration = (endTime - startTimeRef.current) / 1000;
+    // Use tracked active duration instead of wall-clock time
+    const duration = activeDurationRef.current;
 
     const totalPower = rawDataRef.current.reduce((sum, point) => sum + point.power, 0);
     const avgPower = rawDataRef.current.length > 0 ? Math.round(totalPower / rawDataRef.current.length) : 0;
@@ -49,6 +62,8 @@ export const useWorkoutRecorder = (workoutName: string, steps: IntervalStep[], p
     // Reset state
     setIsRecording(false);
     startTimeRef.current = null;
+    lastDatapointTimeRef.current = null;
+    activeDurationRef.current = 0;
     rawDataRef.current = [];
     console.log('Workout recording stopped and saved.');
   }, [isRecording, workoutName, steps, profileId]);

@@ -263,7 +263,7 @@ function App() {
     author: 'User', tags: [], steps: [], totalDuration: 0
   });
   const [session, setSession] = useState<WorkoutSessionState>({
-    isActive: false, currentStepIndex: 0, elapsedTimeInStep: 0, totalElapsedTime: 0, isPaused: false, rawData: [], startTime: 0
+    isActive: false, currentStepIndex: 0, elapsedTimeInStep: 0, totalElapsedTime: 0, scheduledElapsedTime: 0, isPaused: false, rawData: [], startTime: 0
   });
   const [currentProfile, setCurrentProfile] = useState<UserProfile | null>(null);
   const [userWorkouts, setUserWorkouts] = useState<WorkoutRecording[]>([]);
@@ -451,7 +451,7 @@ function App() {
       timerRef.current = window.setInterval(() => {
         setSession(prev => {
           if (view !== 'SESSION' && view !== 'FREE_RIDE' && view !== 'ERG_MODE') {
-            return { ...prev, totalElapsedTime: prev.totalElapsedTime + 1 };
+            return { ...prev, totalElapsedTime: prev.totalElapsedTime + 1, scheduledElapsedTime: prev.scheduledElapsedTime + 1 };
           }
 
           if (view === 'SESSION') {
@@ -477,7 +477,7 @@ function App() {
               const biasedPower = Math.round(power * (difficultyBias / 100));
               if (isErgModeActive) bleService.setTargetPower(biasedPower);
 
-              return { ...prev, currentStepIndex: nextIndex, elapsedTimeInStep: 0, totalElapsedTime: prev.totalElapsedTime + 1 };
+              return { ...prev, currentStepIndex: nextIndex, elapsedTimeInStep: 0, totalElapsedTime: prev.totalElapsedTime + 1, scheduledElapsedTime: prev.scheduledElapsedTime + 1 };
             }
 
             // --- Intra-Step Power Adjustment Logic ---
@@ -497,11 +497,11 @@ function App() {
               }
             }
 
-            return { ...prev, elapsedTimeInStep: prev.elapsedTimeInStep + 1, totalElapsedTime: prev.totalElapsedTime + 1 };
+            return { ...prev, elapsedTimeInStep: prev.elapsedTimeInStep + 1, totalElapsedTime: prev.totalElapsedTime + 1, scheduledElapsedTime: prev.scheduledElapsedTime + 1 };
           }
 
           // For FREE_RIDE and ERG_MODE, just increment total time
-          return { ...prev, totalElapsedTime: prev.totalElapsedTime + 1 };
+          return { ...prev, totalElapsedTime: prev.totalElapsedTime + 1, scheduledElapsedTime: prev.scheduledElapsedTime + 1 };
         });
       }, 1000);
     } else {
@@ -703,7 +703,7 @@ function App() {
     setIsCompletionModalOpen(true);
     setShowSaveModal(false);
     bleService.setTargetPower(100);
-    setSession({ isActive: false, currentStepIndex: 0, elapsedTimeInStep: 0, totalElapsedTime: 0, isPaused: false, rawData: [], startTime: 0 });
+    setSession({ isActive: false, currentStepIndex: 0, elapsedTimeInStep: 0, totalElapsedTime: 0, scheduledElapsedTime: 0, isPaused: false, rawData: [], startTime: 0 });
   };
 
   const handleDownloadTcx = (workoutData: WorkoutRecording) => {
@@ -743,7 +743,7 @@ function App() {
     setShowSaveModal(false);
     bleService.setTargetPower(100);
     setView('HOME');
-    setSession({ isActive: false, currentStepIndex: 0, elapsedTimeInStep: 0, totalElapsedTime: 0, isPaused: false, rawData: [], startTime: 0 });
+    setSession({ isActive: false, currentStepIndex: 0, elapsedTimeInStep: 0, totalElapsedTime: 0, scheduledElapsedTime: 0, isPaused: false, rawData: [], startTime: 0 });
   };
 
   const handleSkipInterval = () => {
@@ -753,9 +753,10 @@ function App() {
       const currentStep = workout.steps[prev.currentStepIndex];
       if (!currentStep) return prev; // Should not happen, but safe guard.
 
-      // Add remaining time in current step to total elapsed time to advance progress bar
+      // Add remaining time in current step to scheduledElapsedTime only (for progress bar)
+      // totalElapsedTime stays unchanged as no real activity happened during the skip
       const remainingTimeInStep = currentStep.duration - prev.elapsedTimeInStep;
-      const newTotalElapsedTime = prev.totalElapsedTime + remainingTimeInStep;
+      const newScheduledElapsedTime = prev.scheduledElapsedTime + remainingTimeInStep;
 
       const nextIndex = prev.currentStepIndex + 1;
 
@@ -767,7 +768,7 @@ function App() {
         return {
           ...prev,
           isPaused: true,
-          totalElapsedTime: newTotalElapsedTime, // Update time before stopping
+          scheduledElapsedTime: newScheduledElapsedTime,
         };
       }
 
@@ -781,7 +782,7 @@ function App() {
         ...prev,
         currentStepIndex: nextIndex,
         elapsedTimeInStep: 0,
-        totalElapsedTime: newTotalElapsedTime,
+        scheduledElapsedTime: newScheduledElapsedTime,
       };
     });
   };
@@ -877,7 +878,7 @@ function App() {
     }
 
     startRecording();
-    setSession({ isActive: true, currentStepIndex: 0, elapsedTimeInStep: 0, totalElapsedTime: 0, isPaused: false, rawData: [], startTime: Date.now() });
+    setSession({ isActive: true, currentStepIndex: 0, elapsedTimeInStep: 0, totalElapsedTime: 0, scheduledElapsedTime: 0, isPaused: false, rawData: [], startTime: Date.now() });
     setView(mode);
   }
 
@@ -1897,14 +1898,14 @@ function App() {
       setFtpTestResult(null); // Close modal
       bleService.setTargetPower(100);
       setView('HOME');
-      setSession({ isActive: false, currentStepIndex: 0, elapsedTimeInStep: 0, totalElapsedTime: 0, isPaused: false, rawData: [], startTime: 0 });
+      setSession({ isActive: false, currentStepIndex: 0, elapsedTimeInStep: 0, totalElapsedTime: 0, scheduledElapsedTime: 0, isPaused: false, rawData: [], startTime: 0 });
     };
 
     const handleDeclineFtp = () => {
       setFtpTestResult(null); // Close modal
       bleService.setTargetPower(100);
       setView('HOME');
-      setSession({ isActive: false, currentStepIndex: 0, elapsedTimeInStep: 0, totalElapsedTime: 0, isPaused: false, rawData: [], startTime: 0 });
+      setSession({ isActive: false, currentStepIndex: 0, elapsedTimeInStep: 0, totalElapsedTime: 0, scheduledElapsedTime: 0, isPaused: false, rawData: [], startTime: 0 });
     };
 
     return (
@@ -1959,12 +1960,12 @@ function App() {
 
         bleService.setTargetPower(100);
         setView('HOME');
-        setSession({ isActive: false, currentStepIndex: 0, elapsedTimeInStep: 0, totalElapsedTime: 0, isPaused: false, rawData: [], startTime: 0 });
+        setSession({ isActive: false, currentStepIndex: 0, elapsedTimeInStep: 0, totalElapsedTime: 0, scheduledElapsedTime: 0, isPaused: false, rawData: [], startTime: 0 });
       }).catch(err => {
         console.error(err);
         bleService.setTargetPower(100);
         setView('HOME');
-        setSession({ isActive: false, currentStepIndex: 0, elapsedTimeInStep: 0, totalElapsedTime: 0, isPaused: false, rawData: [], startTime: 0 });
+        setSession({ isActive: false, currentStepIndex: 0, elapsedTimeInStep: 0, totalElapsedTime: 0, scheduledElapsedTime: 0, isPaused: false, rawData: [], startTime: 0 });
       });
     };
 
@@ -2044,7 +2045,7 @@ function App() {
             />
             {/* Progress Cursor */}
             <foreignObject
-              x={`${(session.totalElapsedTime / workout.totalDuration) * 100}%`}
+              x={`${(session.scheduledElapsedTime / workout.totalDuration) * 100}%`}
               y="0"
               width="2"
               height="100%"
@@ -2299,7 +2300,7 @@ function App() {
 
                 {/* Row 3: Time */}
                 {isIntervalSession && currentStep && <SessionGridMetric label="Step Time" value={formatTime(currentStep.duration - session.elapsedTimeInStep)} unit="" className="lg:col-span-2" />}
-                <SessionGridMetric label="Total Time" value={formatTime(session.totalElapsedTime)} unit="" className={isIntervalSession ? "lg:col-span-2" : "col-span-2 lg:col-span-4"} />
+                <SessionGridMetric label="Total Time" value={`${formatTime(session.totalElapsedTime)} / ${formatTime(workout.totalDuration)}`} unit="" className={isIntervalSession ? "lg:col-span-2" : "col-span-2 lg:col-span-4"} />
               </div>
             ) : (<div></div>)}
             <Button onClick={() => setIsGridCollapsed(!isGridCollapsed)} variant="secondary" size="icon" className="absolute top-2 right-2 z-20 !w-8 !h-8 bg-black/30 backdrop-blur-sm md:hidden">

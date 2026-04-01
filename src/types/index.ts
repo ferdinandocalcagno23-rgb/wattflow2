@@ -150,6 +150,7 @@ export interface WorkoutSessionState {
   currentStepIndex: number;
   elapsedTimeInStep: number;
   totalElapsedTime: number;
+  scheduledElapsedTime: number; // includes skipped time, for progress bar positioning only
   isPaused: boolean;
   rawData: RawDataPoint[];
   startTime: number;
